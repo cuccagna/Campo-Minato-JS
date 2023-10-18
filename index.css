@@ -1,0 +1,362 @@
+/* rgb(0,23,50)
+  rgb(241,117,78)
+  rgb(78,241,187)
+  rgb(216,238,232)
+  rgb(203,223,221)
+  rgb(157,197,199) */
+
+/* :root {
+  --game-panel-color: rgb(0, 23, 50);
+  --win-color: rgb(78, 241, 187,0.5);
+  --cell-color: rgb(216, 238, 232);
+  --cell-dark-color: rgb(203, 223, 221);
+  --cell-clicked-color: rgb(157, 197, 199);
+  --cell-bomb-game-over-color: rgb(241, 117, 78);
+  --main-font: "Darker Grotesque", "sans-serif";
+  --end-game-font: "Press Start 2P", cursive;
+} */
+
+:root {
+  --game-panel-color: #5545bf;
+  --win-color: rgb(32, 255, 181, 0.5);
+  --cell-color: #f2e5a2;
+  --cell-dark-color: #f2de79;
+  --cell-clicked-color: #c3b324;
+  --cell-bomb-game-over-color: rgba(241, 116, 78, 0.7);
+  --main-font: "VT323", "handwriting", "serif";
+  --end-game-font: "Bungee Spice", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 16px;
+  color: var(--game-panel-color);
+  background-color: var(--cell-color);
+  font-family: var(--main-font);
+}
+
+/* Customizza la select */
+.theme-choise-container {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.custom-select {
+  margin-left: 10px;
+  position: relative;
+  font-family: Arial;
+  width: 200px;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: var(--game-panel-color);
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,
+.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: var(--game-panel-color);
+  filter: saturate(10);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+div.game-container {
+  max-width: 484px;
+  margin: 0 auto;
+  /* position: relative; */
+
+  /* border: 1px dashed black; */
+}
+
+/* div.game-board-img {
+  height: inherit;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  background-image: url("./assets/img/coyote_bip_bip2.jpg");
+} */
+
+/* Pannello di gioco */
+h1 {
+  font-size: 40px;
+}
+/* Punteggi */
+.score {
+  font-size: 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.score-storico-partite {
+  font-size: 20px;
+}
+
+.score-storico-partite {
+  display: flex;
+  justify-content: space-between;
+}
+
+.score-storico-partite__container-you,
+.score-storico-partite__container-cpu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Tabellone di gioco */
+
+.game-board {
+  border: 2px solid var(--game-panel-color);
+  /*  position: relative;
+  z-index: 1; */
+  position: relative;
+}
+.game-board-background {
+  mix-blend-mode: multiply;
+
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: inherit;
+  z-index: 100;
+  pointer-events: none; /* necessario perchè altrimenti l'evento click non filtra attraverso l'immagine che sta davanti */
+  /*Usa opacity per un'immagine meno invasiva
+   opacity: 0.15; */
+}
+
+.game-board-background.opaque {
+  opacity: 0.3;
+}
+
+.grid {
+  position: relative;
+  /* height: 480px; */
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.cell {
+  width: 10%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--game-panel-color);
+  border: 1px dashed black;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: var(--cell-color);
+}
+
+.cell-clicked,
+.cell-bomb {
+  cursor: not-allowed;
+}
+
+.cell-dark {
+  background-color: var(--cell-dark-color);
+}
+
+/* Schermata di fine gioco */
+
+.end-game-screen {
+  position: absolute;
+  background-image: radial-gradient(
+    var(--cell-color),
+    var(--cell-bomb-game-over-color)
+  );
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 200;
+}
+
+.end-game-text {
+  font-family: var(--end-game-font);
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-size: 48px;
+
+  margin-bottom: 16px;
+}
+
+button {
+  font-size: 24px;
+  font-family: --main-font;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer;
+  max-height: 0;
+  overflow: hidden;
+  animation: playAgainAppear 0.8s 4s forwards;
+}
+
+@keyframes playAgainAppear {
+  to {
+    max-height: 200px;
+    padding: 4px 20px 8px 20px;
+    border: 2px solid var(--game-panel-color);
+  }
+}
+
+button:hover {
+  background-color: var(--cell-dark-color);
+}
+
+.hidden {
+  display: none;
+}
+
+/* Classe da aggiungere tramite js a .end-gam-screen */
+.end-game-screen.win {
+  background-color: var(--win-color);
+  background-image: none;
+}
+
+.end-game-screen.win button {
+  color: var(--game-panel-color);
+  border-color: var(--game-panel-color);
+}
+
+.end-game-text div.first-line,
+.end-game-text div:nth-of-type(2) {
+  overflow: hidden;
+  margin: 0 auto;
+  text-align: center;
+  width: 0;
+  border-right: 1.5px solid transparent;
+
+  animation: typing 2s steps(20, end) forwards, blink-caret 0.6s step-end 4;
+}
+
+.end-game-text div:nth-of-type(2) {
+  animation-delay: 2s;
+  /* animation: typing 1.3s 1.3s steps(20, end),
+    blink-caret 0.7s 1.3 step-end infinite; */
+}
+
+.end-game-text div.first-line {
+  margin-bottom: 5px;
+}
+
+.treasure {
+  height: 0;
+}
+
+.treasure-win.treasure-meme {
+  background-image: url("./assets/img/coyoteCatturaEditato3.png");
+  width: 62%;
+
+  margin: 0 auto 10px;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-blend-mode: luminosity;
+}
+
+.treasure-win {
+  animation: tesoro 1s 4s forwards;
+}
+
+@keyframes tesoro {
+  to {
+    opacity: 1;
+    height: 220px;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: orange;
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+.cell-clicked {
+  background-color: var(--cell-clicked-color);
+}
+
+.cell-bomb {
+  background-color: var(--cell-bomb-game-over-color);
+  background-image: url("./assets/img/bomba-default.png");
+  background-image: url("./assets/img/icons8-bomba-48.png");
+}
+
+.cell-treasure {
+  background-image: url("./assets/img/Jolly_jokerPerfetto.png");
+  background-size: cover;
+}

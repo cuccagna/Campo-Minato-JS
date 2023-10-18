@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campo Minato</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Darker+Grotesque&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--     Avrei potuto caricare i font sopra con un unico tag link ma mi 
+    annoiava farlo
+ -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="theme-choise-container">
+        <label for="theme">Scegli tema</label>
+        <div class="custom-select">
+          <select id="theme">
+            <option value="default">Scegli il tema</option>
+            <option value="willy il coyote">willy il coyote</option>
+            <option value="willy il coyote">default</option>
+          </select>
+        </div>
+      </div>
+      <!-- <div class="game-board-img" /> -->
+      <!-- Pannello informazioni di gioco -->
+      <div class="game-panel">
+        <h1>Campo Minato</h1>
+        <div class="score">
+          <span>SCORE</span>
+          <span class="score-counter">00000</span>
+        </div>
+        <div class="score-storico-partite">
+          <div class="score-storico-partite__container-you">
+            <span class="score-storico__you-intestazione">YOU</span
+            ><span class="score-storico__you">0</span>
+          </div>
+          <div>vs</div>
+          <div class="score-storico-partite__container-cpu">
+            <span class="score-storico__cpu-intestazione">CPU</span
+            ><span class="score-storico__cpu">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabellone di gioco -->
+      <div class="game-board">
+        <img
+          src="./assets/img/coyote_bip_bip2.jpg"
+          alt=""
+          class="game-board-background"
+        />
+        <!--  <div class="game-board-background"></div> -->
+        <div class="grid">
+          <!-- Qui ci saranno le celle -->
+        </div>
+
+        <!-- Schermata di fine gioco -->
+        <div class="end-game-screen hidden">
+          <div class="treasure"></div>
+          <h2 class="end-game-text">
+            <div>Game</div>
+            <div>Over</div>
+          </h2>
+          <button class="play-again">Gioca ancora</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
